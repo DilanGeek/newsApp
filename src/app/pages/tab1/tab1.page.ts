@@ -1,23 +1,37 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NewsService } from '../../services/news.service';
-import { Article } from '../../interfaces/interfaces'
+import { Article, ResponseTopHeadLines } from '../../interfaces/interfaces';
 
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
-  styleUrls: ['tab1.page.scss']
+  styleUrls: ['tab1.page.scss'],
 })
-export class Tab1Page {
-  
+export class Tab1Page implements OnInit {
   public news: Article[] = [];
 
-  constructor(private newServ: NewsService) { }
+  constructor(private newServ: NewsService) {}
 
-  ngOnInit(): void {
-    this.newServ.getTopHeadLines().subscribe((data) => {
-      // this.news = data.articles
-      this.news.push(...data.articles);
-    })
+  ngOnInit() {
+    this.loadNews();
   }
 
+  loadData = (e) => {
+    this.loadNews(e);
+  };
+
+  loadNews = (e?) => {
+    this.newServ.getTopHeadLines().subscribe((data) => {
+      if (data.articles.length === 0) {
+        e.target.disabled = true;
+        e.target.complete();
+        return;
+      }
+
+      this.news.push(...data.articles);
+      if (e) {
+        e.target.complete();
+      }
+    });
+  };
 }

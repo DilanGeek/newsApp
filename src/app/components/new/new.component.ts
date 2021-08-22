@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Article } from '../../interfaces/interfaces';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @Component({
   selector: 'app-new',
@@ -7,12 +8,14 @@ import { Article } from '../../interfaces/interfaces';
   styleUrls: ['./new.component.scss'],
 })
 export class NewComponent implements OnInit {
-
   @Input() new: Article;
   @Input() index: number;
 
-  constructor() { }
+  constructor(private inAppBrowser: InAppBrowser) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
+  openNew = () => {
+    const browser = this.inAppBrowser.create(this.new.url, '_system');
+  };
 }
