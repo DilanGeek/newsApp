@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { DataLocalServiceService } from '../../services/data-local-service.service';
+
 
 @Component({
   selector: 'app-tab3',
@@ -7,6 +9,16 @@ import { Component } from '@angular/core';
 })
 export class Tab3Page {
 
-  constructor() {}
+  sliderOpts = {
+    allowSlidePrev: false,
+    allowSlideNext: false
+  }
+
+  constructor(
+    public dataLocalServ: DataLocalServiceService
+  ) {
+    this.dataLocalServ.loadFavotires();
+  }
+
 
 }
